@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Payment Options</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Theme Variables */
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: #fff;
+            --border-color: #eee;
+            --overlay-opacity: 0;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #fff;
+            --card-bg: #2d2d2d;
+            --border-color: #404040;
+            --overlay-opacity: 0.7;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            z-index: 1000;
+            background: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-color);
+        }
+
+        .dark-mode {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        .dark-mode .theme-toggle {
+            background-color: #2d2d2d;
+            color: #fff;
+        }
+
+        .dark-mode .theme-toggle svg {
+            color: #fff;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #fff;
+            padding: 0.25rem;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-title {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .checkout-container {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkout-header {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            padding: 1rem;
+            color: #fff;
+            text-align: center;
+        }
+
+        .checkout-body {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .product-image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-image-container img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .product-description {
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        .price-section {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-label {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .price-amount {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .total-label {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+        .total-amount {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #6a11cb;
+        }
+
+        .dark-mode .total-amount {
+            color: #a78bfa;
+        }
+
+        .checkout-footer {
+            padding: 1.5rem 2rem;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .continue-shopping {
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .continue-shopping:hover {
+            text-decoration: underline;
+        }
+
+        .buy-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .buy-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .checkout-body {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+
+            .product-image-container {
+                margin-bottom: 1rem;
+            }
+
+            .checkout-footer {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .continue-shopping {
+                order: 2;
+            }
+
+            .buy-btn {
+                order: 1;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        /* Expandable Payment Section */
+        .expandable-section {
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        .expand-btn {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .expand-btn:hover {
+            color: #6a11cb;
+        }
+
+        .dark-mode .expand-btn:hover {
+            color: #a78bfa;
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .expand-btn.active .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .payment-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        .payment-list.show {
+            max-height: 1000px;
+            border: 1px solid var(--border-color);
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .payment-option:last-child {
+            border-bottom: none;
+        }
+
+        .payment-option:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-mode .payment-option:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .payment-option-logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-option-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .payment-option-info {
+            flex: 1;
+        }
+
+        .payment-option-name {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .payment-option-number {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .payment-option-radio {
+            margin-left: auto;
+            padding-left: 1rem;
+        }
+
+        .payment-option-radio input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #6a11cb;
+        }
+
+        .qris-option {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .qris-image-small {
+            width: 80px;
+            height: 80px;
+            margin: 0.5rem 0;
+        }
+
+        .qris-image-small img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* Warning Note */
+        .payment-warning {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #fff9c4;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .dark-mode .payment-warning {
+            background-color: rgba(255, 193, 7, 0.15);
+            border-left-color: #ffc107;
+        }
+        
+        .warning-icon {
+            font-size: 1.5rem;
+        }
+        
+        .warning-text {
+            font-size: 0.95rem;
+            color: #5f4700;
+            font-weight: 500;
+            flex: 1;
+        }
+        
+        .dark-mode .warning-text {
+            color: #ffd54f;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="back-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                </svg>
+               Back
+            </a>
+            <h1 class="header-title">Checkout</h1>
+            <div class="logo">
+                <img src="https://pomf2.lain.la/f/b4k5if9w.png" alt="Company Logo">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="checkout-container">
+            <div class="checkout-header">
+                <h2>Checkout Summary</h2>
+            </div>
+            <div class="checkout-body">
+                <div class="product-image-container">
+                    <img id="product-image" src="https://via.placeholder.com/300x200?text=Product" alt="Product Image">
+                </div>
+                <div class="product-details">
+                    <h3 id="product-title" class="product-title">Product Title</h3>
+                    <p id="product-description" class="product-description">Product description will be displayed here.</p>
+                    <div class="price-section">
+                        <div class="price-row">
+                            <span class="price-label">Price:</span>
+                            <span id="product-price" class="price-amount">Rp 0</span>
+                        </div>
+                        <div class="total-row">
+                            <span class="total-label">Total:</span>
+                            <span id="product-total" class="total-amount">Rp 0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Expandable Payment Section -->
+                    <div class="expandable-section">
+                        <button class="expand-btn" onclick="togglePaymentSection()">
+                            <span>Choose Payment Method</span>
+                            <svg class="expand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        
+                        <div class="payment-list" id="paymentList">
+                            <!-- Dana -->
+                            <div class="payment-option">
+                                <div class="payment-option-logo">
+                                    <img src="https://i.pinimg.com/736x/13/db/af/13dbafbf849af404cf61e28de61f8f78.jpg" alt="Dana Logo">
+                                </div>
+                                <div class="payment-option-info">
+                                    <div class="payment-option-name">DANA</div>
+                                    <div class="payment-option-number">
+                                        No: 08123456789
+                                        <button class="copy-btn" onclick="copyNumber('08123456789')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                            <span class="copy-tooltip"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="payment-option-radio">
+                                    <input type="radio" name="payment-method" id="dana" value="dana">
+                                </div>
+                            </div>
+
+                            <!-- OVO -->
+                            <div class="payment-option">
+                                <div class="payment-option-logo">
+                                    <img src="https://i.pinimg.com/736x/73/85/c9/7385c9ad635785453e4ab577e02ff80e.jpg" alt="OVO Logo">
+                                </div>
+                                <div class="payment-option-info">
+                                    <div class="payment-option-name">OVO</div>
+                                    <div class="payment-option-number">
+                                        No: 08123456789
+                                        <button class="copy-btn" onclick="copyNumber('08123456789')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                            <span class="copy-tooltip"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="payment-option-radio">
+                                    <input type="radio" name="payment-method" id="ovo" value="ovo">
+                                </div>
+                            </div>
+
+                            <!-- GoPay -->
+                            <div class="payment-option">
+                                <div class="payment-option-logo">
+                                    <img src="https://i.pinimg.com/736x/fe/ce/b2/feceb2ca508603b06c2f7ba18a5d018d.jpg" alt="GoPay Logo">
+                                </div>
+                                <div class="payment-option-info">
+                                    <div class="payment-option-name">GOPAY</div>
+                                    <div class="payment-option-number">
+                                        No: 08123456789
+                                        <button class="copy-btn" onclick="copyNumber('08123456789')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                            <span class="copy-tooltip"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="payment-option-radio">
+                                    <input type="radio" name="payment-method" id="gopay" value="gopay">
+                                </div>
+                            </div>
+
+                            <!-- QRIS -->
+                            <div class="payment-option qris-option">
+                                <div class="payment-option-logo">
+                                    <!-- QRIS Logo -->
+                                </div>
+                                <div class="payment-option-info">
+                                    <div class="payment-option-name">QRIS</div>
+                                    <div class="qris-image-small">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3lLyrNm7wUqcGuNR8mv5CJVLMpYzt4B-x7A&s" alt="QRIS Code">
+                                    </div>
+                                </div>
+                                <div class="payment-option-radio">
+                                    <input type="radio" name="payment-method" id="qris" value="qris">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Warning Note -->
+                    <div class="payment-warning">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-text">Untuk Mempercepat Proses pembelian > Silahkan Lakukan Pembayaran dan Kirim Bukti Pembayaran pada Button [Proceed to Payment]</div>
+                    </div>
+                </div>
+            </div>
+            <div class="checkout-footer">
+                <a href="index.html" class="continue-shopping">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"></path>
+                    </svg>
+                    Continue Shopping
+                </a>
+                <a id="checkout-button" href="#" class="buy-btn">
+                    Proceed to Payment
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Payment Solutions. YoshCasaster.</p>
+    </footer>
+
+    <script>
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Get product information from URL parameters
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            if (productId) {
+                fetchProductDetails(productId);
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Fetch product details from products.js
+        function fetchProductDetails(productId) {
+            // Import the products.js script
+            const script = document.createElement('script');
+            script.src = 'products.js';
+            script.onload = function() {
+                // After products.js is loaded, find the product
+                const product = findProductById(productId);
+                
+                if (product) {
+                    displayProductDetails(product);
+                } else {
+                    alert('Product not found');
+                    window.location.href = 'index.html';
+                }
+            };
+            document.head.appendChild(script);
+        }
+
+        // Find product by ID
+        function findProductById(productId) {
+            // Access the products through the window.productManager
+            if (window.productManager && window.productManager.products) {
+                // Check all categories
+                for (const category in window.productManager.products) {
+                    const products = window.productManager.products[category];
+                    const product = products.find(p => p.id === productId);
+                    if (product) {
+                        return product;
+                    }
+                }
+            }
+            return null;
+        }
+
+        // Display product details
+        function displayProductDetails(product) {
+            // Set product image
+            document.getElementById('product-image').src = product.image;
+            document.getElementById('product-image').alt = product.name;
+            
+            // Set product title and description
+            document.getElementById('product-title').textContent = product.name;
+            document.getElementById('product-description').textContent = product.description;
+            
+            // Calculate and set prices
+            const priceText = product.price;
+            const priceValue = parseFloat(priceText.replace(/[^\d]/g, ''));
+            
+            document.getElementById('product-price').textContent = priceText;
+            document.getElementById('product-total').textContent = priceText;
+            
+            // Set checkout button URL
+            if (product.checkoutUrl) {
+                document.getElementById('checkout-button').href = product.checkoutUrl;
+            } else {
+                // Default WhatsApp URL if product doesn't have a specific one
+                const message = `Hay Min, saya ingin konfirmasi pembelian produk ${product.name} dengan harga ${priceText}. Berikut bukti pembayarannya.`;
+                const encodedMessage = encodeURIComponent(message);
+                document.getElementById('checkout-button').href = `https://wa.me/6288226772171?text=${encodedMessage}`;
+            }
+        }
+        
+        // Toggle payment section visibility
+        function togglePaymentSection() {
+            const paymentList = document.getElementById('paymentList');
+            const expandBtn = document.querySelector('.expand-btn');
+            
+            paymentList.classList.toggle('show');
+            expandBtn.classList.toggle('active');
+        }
+        
+        // Function to copy payment number to clipboard
+        function copyNumber(number) {
+            navigator.clipboard.writeText(number).then(() => {
+                // Show success message
+                const tooltip = event.target.closest('.copy-btn').querySelector('.copy-tooltip');
+                tooltip.textContent = 'Copied!';
+                setTimeout(() => {
+                    tooltip.textContent = 'Coerpy Numb';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yosh Store</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Theme Variables */
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: #fff;
+            --border-color: #eee;
+            --overlay-opacity: 0;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #fff;
+            --card-bg: #2d2d2d;
+            --border-color: #404040;
+            --overlay-opacity: 0.7;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            z-index: 1000;
+            background: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-color);
+        }
+
+        .dark-mode {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        .dark-mode .hero-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .dark-mode .payment-section {
+            background-color: #2d2d2d;
+        }
+
+        .dark-mode .payment-table {
+            background-color: #2d2d2d;
+        }
+
+        .dark-mode .payment-row {
+            border-bottom-color: #404040;
+        }
+
+        .dark-mode .warning-message {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .dark-mode .payment-name {
+            color: #fff;
+        }
+
+        .dark-mode .payment-number {
+            color: #e0e0e0;
+        }
+
+        .dark-mode .section-title h2 {
+            color: #fff;
+        }
+
+        .dark-mode .section-title h2::after {
+            background: linear-gradient(to right, #a78bfa, #60a5fa);
+        }
+
+        .dark-mode .hero-text h1 {
+            background: linear-gradient(to right, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .dark-mode .hero-text p {
+            color: #d1d5db;
+        }
+
+        .dark-mode .hero-text .typed-text {
+            background: linear-gradient(to right, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .dark-mode .hero-text .static-text {
+            color: #d1d5db;
+        }
+
+        .dark-mode .qris-image {
+            background-color: #333;
+            border-color: #404040;
+        }
+
+        .dark-mode .theme-toggle {
+            background-color: #2d2d2d;
+            color: #fff;
+        }
+
+        .dark-mode .theme-toggle svg {
+            color: #fff;
+        }
+
+        .dark-mode .payment-row:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode .payment-row {
+            border-bottom-color: #404040;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .payment-row:hover .payment-name {
+            color: #a78bfa;
+        }
+
+        .dark-mode .payment-row:hover .payment-number {
+            color: #60a5fa;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 70vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, var(--overlay-opacity));
+            transition: background-color 0.3s ease;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 4rem 1rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            border-radius: 9999px;
+            overflow: hidden;
+            background: #fff;
+            padding: 0.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: 1.5rem;
+            color: #d1d5db;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+
+        .hero-text .typed-text {
+            background: linear-gradient(to right, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+
+        .hero-text .static-text {
+            color: #d1d5db;
+            font-size: 1.5rem;
+        }
+
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .hero-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Payment Section */
+        .payment-section {
+            padding: 2rem 1rem;
+            background-color: var(--card-bg);
+            margin-top: -5rem;
+            position: relative;
+            z-index: 20;
+            border-radius: 1rem 1rem 0 0;
+            transition: background-color 0.3s ease;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: #333;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.75rem;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 40%;
+            height: 3px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            bottom: 0;
+            left: 30%;
+            border-radius: 2px;
+        }
+
+        .payment-table {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        .payment-row {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .payment-row:last-child {
+            border-bottom: none;
+        }
+
+        .payment-row:hover {
+            background-color: #f8f9fa;
+        }
+
+        .payment-logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .payment-info {
+            flex: 1;
+        }
+
+        .payment-name {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .payment-number {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #6a11cb;
+            cursor: pointer;
+            padding: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            color: #2575fc;
+        }
+
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .copy-tooltip {
+            position: absolute;
+            background: #333;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .copy-btn:hover .copy-tooltip {
+            opacity: 1;
+        }
+
+        .qris-image {
+            width: 200px;
+            height: 200px;
+            margin: 1rem auto;
+            padding: 1rem;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .qris-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .payment-row.qris-row {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .payment-row.qris-row .payment-logo {
+            margin-bottom: 1rem;
+        }
+
+        .payment-row.qris-row .payment-info {
+            width: 100%;
+        }
+
+        .payment-row.qris-row .payment-name {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .warning-message {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .submit-btn {
+            display: block;
+            width: 200px;
+            margin: 1.5rem auto;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero {
+                height: 60vh;
+            }
+
+            .payment-section {
+                margin-top: -3rem;
+                padding: 1.5rem 1rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.75rem;
+            }
+
+            .payment-options {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 1rem;
+            }
+
+            .hero-content {
+                padding: 3rem 1rem;
+            }
+
+            .logo {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text p {
+                font-size: 1.25rem;
+            }
+
+            .hero-text .typed-text,
+            .hero-text .static-text {
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                height: 50vh;
+            }
+
+            .payment-section {
+                margin-top: -2rem;
+            }
+
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content {
+                padding: 2rem 1rem;
+            }
+
+            .logo {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 1rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .hero-text p {
+                font-size: 1.1rem;
+            }
+
+            .hero-text .typed-text,
+            .hero-text .static-text {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Tab Navigation Styles */
+        .tab-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            padding: 10px 15px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+        }
+        
+        .tab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .dark-mode .tab-button {
+            background-color: #2d2d2d;
+            border-color: #404040;
+            color: #fff;
+        }
+        
+        .dark-mode .tab-button:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        /* Content Sections */
+        .content-section {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Product Grid Layout */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        /* Product Card Styles */
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-details {
+            padding: 15px;
+        }
+        
+        .product-details h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        
+        .product-details p {
+            color: var(--text-color);
+            opacity: 0.9;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            height: 60px;
+            overflow: hidden;
+        }
+        
+        .product-details .price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #6a11cb;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .dark-mode .product-details .price {
+            color: #a78bfa;
+        }
+        
+        .product-details .buy-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .product-details .buy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.4);
+        }
+        
+        /* Responsive Product Grid */
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .product-details h3 {
+                font-size: 1.1rem;
+            }
+            
+            .product-details p {
+                font-size: 0.8rem;
+                height: 50px;
+            }
+            
+            .product-details .price {
+                font-size: 1.1rem;
+                margin-bottom: 15px;
+            }
+            
+            .product-details .buy-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .product-image {
+                height: 120px;
+            }
+            
+            .product-details {
+                padding: 10px;
+            }
+            
+            .product-details h3 {
+                font-size: 0.9rem;
+                margin-bottom: 5px;
+            }
+            
+            .product-details p {
+                font-size: 0.75rem;
+                margin-bottom: 10px;
+                height: 40px;
+            }
+            
+            .product-details .price {
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
+            
+            .product-details .buy-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Dark Mode Content Section and Product Card Styles */
+        .dark-mode .content-section {
+            background-color: #2d2d2d;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .dark-mode .product-card {
+            background-color: #333;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .dark-mode .product-card:hover {
+            box-shadow: 0 12px 20px rgba(0,0,0,0.3);
+        }
+        
+        .dark-mode .product-details h3,
+        .dark-mode .product-details p {
+            color: #fff;
+        }
+
+        .dark-mode .copy-btn {
+            color: #a78bfa;
+        }
+
+        .dark-mode .copy-btn:hover {
+            color: #60a5fa;
+        }
+
+        /* Testimonial Gallery Styles */
+        .testimonial-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .testimonial-header h3 {
+            font-size: 1.8rem;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .testimonial-header p {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        
+        .testimonial-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.03);
+        }
+        
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+        
+        .client-name {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Testimonial Gallery */
+        @media (max-width: 768px) {
+            .testimonial-gallery {
+                gap: 15px;
+            }
+            
+            .testimonial-header h3 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .testimonial-gallery {
+                gap: 10px;
+            }
+            
+            .testimonial-header h3 {
+                font-size: 1.3rem;
+            }
+            
+            .testimonial-header p {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Dark Mode Testimonial Styles */
+        .dark-mode .testimonial-header h3,
+        .dark-mode .testimonial-header p {
+            color: #fff;
+        }
+        
+        .dark-mode .client-name {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <video class="hero-video" autoplay loop muted playsinline>
+            <source src="https://v1.pinimg.com/videos/iht/720p/1c/55/b0/1c55b0875dcb3d9a0ee051c8defa83da.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="logo">
+                <img src="https://pomf2.lain.la/f/b4k5if9w.png" alt="Company Logo">
+            </div>
+            <div class="hero-text">
+                <h1>Code Fomo</h1>
+                <p>
+                    <span class="typed-text">Landing Page</span>
+                    <span class="static-text"> Aktif</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Section -->
+    <section class="payment-section" id="payment">
+        <div class="section-title">
+            <h2>Product & Payment</h2>
+        </div>
+        
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-button active" onclick="showContent('product1')">PRODUCT 1</button>
+            <button class="tab-button" onclick="showContent('product2')">PRODUCT 2</button>
+            <button class="tab-button" onclick="showContent('product3')">PRODUCT 3</button>
+            <button class="tab-button" onclick="showContent('product4')">PRODUCT 4</button>
+            <button class="tab-button" onclick="showContent('testimonial')">TESTIMONIAL</button>
+            <button class="tab-button" onclick="showContent('paymentList')">PAYMENT LIST</button>
+        </div>
+        
+        <!-- Product Content Sections -->
+        <div id="product1" class="content-section active">
+            <!-- Product content will be loaded via JavaScript -->
+        </div>
+        
+        <div id="product2" class="content-section">
+            <!-- Product content will be loaded via JavaScript -->
+        </div>
+        
+        <div id="product3" class="content-section">
+            <!-- Product content will be loaded via JavaScript -->
+        </div>
+        
+        <div id="product4" class="content-section">
+            <!-- Product content will be loaded via JavaScript -->
+        </div>
+        
+        <!-- Testimonial Content -->
+        <div id="testimonial" class="content-section">
+            <!-- Testimonial content will be loaded via testimonial.js -->
+        </div>
+        
+        <!-- Payment List Content -->
+        <div id="paymentList" class="content-section">
+            <div class="payment-table">
+                <!-- Dana -->
+                <div class="payment-row">
+                    <div class="payment-logo">
+                        <img src="https://i.pinimg.com/736x/13/db/af/13dbafbf849af404cf61e28de61f8f78.jpg" alt="Dana Logo">
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-name">DANA</div>
+                        <div class="payment-number">
+                            No: 08123456789
+                            <button class="copy-btn" onclick="copyNumber('08123456789')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span class="copy-tooltip">Copy Number</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OVO -->
+                <div class="payment-row">
+                    <div class="payment-logo">
+                        <img src="https://i.pinimg.com/736x/73/85/c9/7385c9ad635785453e4ab577e02ff80e.jpg" alt="OVO Logo">
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-name">OVO</div>
+                        <div class="payment-number">
+                            No: 08123456789
+                            <button class="copy-btn" onclick="copyNumber('08123456789')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span class="copy-tooltip">Copy Number</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GoPay -->
+                <div class="payment-row">
+                    <div class="payment-logo">
+                        <img src="https://i.pinimg.com/736x/fe/ce/b2/feceb2ca508603b06c2f7ba18a5d018d.jpg" alt="GoPay Logo">
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-name">GOPAY</div>
+                        <div class="payment-number">
+                            No: 08123456789
+                            <button class="copy-btn" onclick="copyNumber('08123456789')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span class="copy-tooltip">Copy Number</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PayPal -->
+                <div class="payment-row">
+                    <div class="payment-logo">
+                        <img src="https://i.pinimg.com/736x/7c/81/52/7c8152cb8959cd0155c5f8d6cc3c7cd6.jpg" alt="PayPal Logo">
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-name">PAYPAL</div>
+                        <div class="payment-number">
+                            No: 08123456789
+                            <button class="copy-btn" onclick="copyNumber('08123456789')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span class="copy-tooltip">Copy Number</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QRIS -->
+                <div class="payment-row qris-row">
+                    <div class="payment-logo">
+                    </div>
+                    <div class="payment-info">
+                        <div class="payment-name">QRIS</div>
+                        <div class="qris-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3lLyrNm7wUqcGuNR8mv5CJVLMpYzt4B-x7A&s" alt="QRIS Code">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-message">
+                *Setelah melakukan pembayaran silahkan kirimkan bukti
+            </div>
+
+            <button class="submit-btn">Kirim</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Payment Solutions. YoshCasaster.</p>
+    </footer>
+
+    <!-- Load Products.js -->
+    <script src="products.js"></script>
+    
+    <!-- Load Testimonials.js -->
+    <script src="testimonial.js"></script>
+    
+    <script>
+        // Typed.js initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            const typedText = document.querySelector('.typed-text');
+            const strings = ['Qris', 'Dana', 'Ovo', 'Gopay'];
+            let currentIndex = 0;
+            
+            function typeText() {
+                typedText.textContent = strings[currentIndex];
+                currentIndex = (currentIndex + 1) % strings.length;
+            }
+            
+            typeText();
+            setInterval(typeText, 2000);
+        });
+
+        // Smooth scrolling
+        document.getElementById('scrollDown').addEventListener('click', function() {
+            document.getElementById('payment').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const paymentCards = document.querySelectorAll('.payment-card');
+            
+            function checkScroll() {
+                const triggerBottom = window.innerHeight * 0.8;
+                
+                paymentCards.forEach(card => {
+                    const cardTop = card.getBoundingClientRect().top;
+                    
+                    if(cardTop < triggerBottom) {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(50px)';
+                    }
+                });
+            }
+            
+            // Initialize cards
+            paymentCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+            
+            // Check on load
+            checkScroll();
+            
+            // Check on scroll
+            window.addEventListener('scroll', checkScroll);
+        });
+
+        function copyNumber(number) {
+            navigator.clipboard.writeText(number).then(() => {
+                // Show success message
+                const tooltip = event.target.closest('.copy-btn').querySelector('.copy-tooltip');
+                tooltip.textContent = 'Copied!';
+                setTimeout(() => {
+                    tooltip.textContent = 'Copy Number';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Tab content switching
+        function showContent(contentId) {
+            // Hide all content sections
+            const contentSections = document.querySelectorAll('.content-section');
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show the selected content section
+            document.getElementById(contentId).classList.add('active');
+            
+            // Add active class to the clicked button
+            event.currentTarget.classList.add('active');
+            
+            // Load products for the tab if it's a product tab
+            if (contentId.startsWith('product')) {
+                loadProductsForTab(contentId);
+            }
+            
+            // Load testimonials if it's the testimonial tab
+            if (contentId === 'testimonial' && window.testimonialManager) {
+                window.testimonialManager.loadTestimonials();
+            }
+        }
+    </script>
+</body>
+</html>
