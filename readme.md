@@ -1,5 +1,3 @@
-Here's a more organized and polished version of your README:
-
 # 🌟 Web Store Sederhana
 
 ![Website Preview](https://github.com/YoshCasaster/Web-payment-list/blob/master/webnya.png?raw=true)  
