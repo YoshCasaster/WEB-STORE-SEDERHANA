@@ -1,109 +1,89 @@
-Berikut README kamu yang sudah **dirapikan di editor markdown style** — siap langsung di-*copy* dan dipakai di GitHub atau editor lainnya:
+Here's a more organized and polished version of your README:
 
-```markdown
-# 📱💳 WEB STORE SEDERHANA
+# 🌟 Web Store Sederhana
 
-![Preview Website](https://github.com/YoshCasaster/Web-payment-list/blob/master/webnya.png?raw=true)  
-*Gambarnya keren kan? Ini preview websitenya!*
+![Website Preview](https://github.com/YoshCasaster/Web-payment-list/blob/master/webnya.png?raw=true)  
+*Preview tampilan website*
 
----
+## 📌 Overview
 
-## 🚀 Apa Ini?
+Website store sederhana untuk menampilkan produk dan metode pembayaran dalam **satu file HTML** saja. Dibangun dengan HTML, CSS, dan JavaScript.
 
-Ini adalah Website Store Sederhana keren buat nampilin metode pembayaran lu, bahkan produk lu, pake **HTML, CSS, JS semua dalam 1 file** doang! Fiturnya:
+## ✨ Fitur Utama
 
-- 🎥 Hero section dengan video background keren  
-- 🌓 Tema terang/gelap (dark/light mode)  
-- 📋 Daftar payment method (DANA, OVO, GOPAY, PayPal, QRIS)  
-- 📋 Kartu Produk  
-- 📋 Tombol copy nomor rekening otomatis  
-- 📱 Responsive (tampilan oke di HP & laptop)  
-- ✨ Animasi-animasi keren  
+| Fitur | Deskripsi |
+|-------|-----------|
+| �️ **Hero Section** | Dengan video background dinamis |
+| 🌗 **Dark/Light Mode** | Tema yang bisa disesuaikan |
+| 💳 **Metode Pembayaran** | Support DANA, OVO, GOPAY, PayPal, QRIS |
+| 🛒 **Kartu Produk** | Tampilan produk yang menarik |
+| 📋 **Auto Copy** | Tombol salin nomor rekening otomatis |
+| 📱 **Responsif** | Tampilan optimal di mobile & desktop |
+| ✨ **Animasi** | Transisi dan efek yang smooth |
 
----
+## 🚀 Panduan Instalasi
 
-## 🛠 Cara Pakai
+1. Clone repository:
+   ```bash
+   git clone https://github.com/YoshCasaster/WEB-STORE-SEDERHANA.git
+   ```
+2. Buka file `index.html` di browser favorit Anda
 
-Gampang banget! Tinggal:
+## ⚙️ Konfigurasi
 
-1. **Edit nomor rekening** di bagian HTML (cari aja `08123456789`, ganti semua)
-2. **Ganti logo** (cari `<img src="https://pomf2.lain.la/f/b4k5if9w.png"` lalu ganti link-nya)
-3. **Ganti QRIS** (cari `<img src="https://encrypted-tbn0...` dan ubah link-nya)
+### 🔧 Personalisasi Dasar
+- **Nomor Rekening**: Edit di bagian HTML (cari `08123456789`)
+- **Logo**: Ganti link di `<img src="https://pomf2.lain.la/f/b4k5if9w.png"`
+- **QRIS**: Update di `<img src="https://encrypted-tbn0..."`
 
----
-
-## 🎨 Customisasi
-
-### 🖼 Ganti Gambar
-
-#### Testimonial:
-```js
-{
-    id: "t1",
-    name: "Client 1",
-    image: "https://i.pinimg.com/736x/e1/a4/82/e1a482b455245e791b7c5626b12a9ecc.jpg",
-    alt: "Testimonial Client 1"
-}
-```
-
-#### Produk:
-```js
+### 🖼 Customisasi Konten
+```html
+<!-- Contoh Produk -->
 {
     id: "c1p1",
-    name: "Premium Web Hosting",
-    price: "Rp 899.000",
-    description: "High-performance web hosting with unlimited bandwidth and storage. Perfect for business websites.",
-    image: "https://i.pinimg.com/736x/3c/8a/27/3c8a27d019100decf195df07f2f6406f.jpg",
-    checkoutUrl: "https://wa.me/6288980818668?text=Hay%20Min%2C%20saya%20ingin%20konfirmasi%20pembelian%20produk%20Premium%20Web%20Hosting%20dengan%20harga%20Rp%20899.000.%20Berikut%20bukti%20pembayarannya."
+    name: "Nama Produk",
+    price: "Rp 999.000",
+    description: "Deskripsi produk Anda",
+    image: "link-gambar-produk",
+    checkoutUrl: "link-checkout"
+}
+
+<!-- Contoh Testimoni -->
+{
+    id: "t1",
+    name: "Nama Klien",
+    image: "link-foto-klien",
+    alt: "Testimonial Klien"
 }
 ```
 
-#### Logo & QRIS:
-```html
-<!-- Logo -->
-<img src="LINK-LOGO-LU" alt="Company Logo">
-
-<!-- QRIS -->
-<img src="LINK-QRIS-LU" alt="QRIS Code">
-```
-
-### 🎥 Ganti Video Background
-```html
-<source src="LINK-VIDEO-LU" type="video/mp4">
-```
-
-### 🌈 Ganti Warna (CSS)
+### 🎨 Customisasi Tampilan
 ```css
-background: linear-gradient(to right, #a78bfa, #60a5fa);
-```
-Ganti kode warnanya sesuai selera!
+/* Ganti warna tema */
+:root {
+    --primary-gradient: linear-gradient(to right, #a78bfa, #60a5fa);
+}
 
----
-
-## 💡 Fitur Keren
-
-- **Dark/Light Mode** – Pencet tombol bulan di pojok kanan atas  
-- **Auto Copy** – Klik icon copy untuk otomatis salin nomor  
-- **Typing Effect** – Teks di hero section berubah-ubah sendiri  
-
----
-
-## 📝 Catatan Penting
-
-1. **Untuk video background**, bisa pakai link dari [Pexels](https://www.pexels.com/) atau upload sendiri  
-2. **Logo payment** udah include, tapi kalo mau ganti tinggal ubah link gambarnya  
-3. **Kalo mau nambah payment method**, tinggal duplikat salah satu bagian `<div class="payment-row">` dan edit isinya  
-
----
-
-## 👨‍💻 Author
-
-Dibuat sama [YoshCasaster](https://github.com/YoshCasaster) dengan ❤️
-
----
-
-**Gampang kan?** Tinggal edit dikit, deploy, dan langsung bisa dipake!  
-Keren kan single file doang tapi fiturnya lengkap? 😎
+/* Ganti video background */
+<source src="link-video-baru.mp4" type="video/mp4">
 ```
 
-Kalau kamu mau, aku juga bisa bantu generate file `README.md`-nya langsung. Mau sekalian?
+## 📂 Struktur File
+```
+Web-payment-list/
+└── index.html          # File utama (HTML+CSS+JS)
+└── webnya.png          # Screenshot preview
+```
+
+## 💡 Tips & Trik
+- Untuk video background, gunakan sumber gratis dari [Pexels](https://www.pexels.com/)
+- Tambahkan metode pembayaran baru dengan menduplikasi elemen `<div class="payment-row">`
+- Gunakan tool seperti [TinyPNG](https://tinypng.com/) untuk optimasi gambar
+
+## 🙏 Credit
+Dikembangkan oleh [YoshCasaster](https://github.com/YoshCasaster)  
+Dibuat dengan ❤️ untuk komunitas open source
+
+---
+
+**🎉 Siap digunakan!** Cukup modifikasi sesuai kebutuhan Anda dan website siap di-deploy!
